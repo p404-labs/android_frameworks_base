@@ -4953,6 +4953,12 @@ public final class Settings {
          */
         public static final String SYSTEMUI_PLUGIN_VOLUME = "systemui_plugin_volume";
 
+       /**
+         * Accent Color
+         * @hide
+         */
+        public static final String ACCENT_COLOR = "accent_color";
+
         /**
          * These are all public system settings
          *
@@ -5068,6 +5074,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD);
             PRIVATE_SETTINGS.add(NETWORK_TRAFFIC_DYNAMIC);
             PRIVATE_SETTINGS.add(SYSTEMUI_PLUGIN_VOLUME);
+            PRIVATE_SETTINGS.add(ACCENT_COLOR);
         }
 
         /**
