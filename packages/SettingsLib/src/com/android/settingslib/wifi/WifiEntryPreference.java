@@ -64,9 +64,6 @@ public class WifiEntryPreference extends Preference implements WifiEntry.WifiEnt
     private final IconInjector mIconInjector;
     private WifiEntry mWifiEntry;
     private int mLevel = -1;
-    private int mWifiStandard;
-    private boolean mVhtMax8SpatialStreamsSupport;
-    private boolean mHe8ssCapableAp;
     private CharSequence mContentDescription;
     private OnButtonClickListener mOnButtonClickListener;
 
@@ -139,34 +136,13 @@ public class WifiEntryPreference extends Preference implements WifiEntry.WifiEnt
     public void refresh() {
         setTitle(mWifiEntry.getTitle());
         final int level = mWifiEntry.getLevel();
-        final int standard = mWifiEntry.getWifiStandard();
-        final boolean vhtMax8SpatialStreamsSupport = mWifiEntry.isVhtMax8SpatialStreamsSupported();
-        final boolean he8ssCapableAp = mWifiEntry.isHe8ssCapableAp();
-
-        if (level != mLevel || standard != mWifiStandard || he8ssCapableAp != mHe8ssCapableAp ||
-                vhtMax8SpatialStreamsSupport != mVhtMax8SpatialStreamsSupport) {
+        if (level != mLevel) {
             mLevel = level;
-            mWifiStandard = standard;
-            mHe8ssCapableAp = he8ssCapableAp;
-            mVhtMax8SpatialStreamsSupport = vhtMax8SpatialStreamsSupport;
-            updateIcon(mLevel, mWifiStandard, mHe8ssCapableAp && mVhtMax8SpatialStreamsSupport);
+            updateIcon(mLevel);
             notifyChanged();
         }
 
-        String summary = mWifiEntry.getSummary(false /* concise */);
-
-        if (mWifiEntry.isPskSaeTransitionMode()) {
-           summary = "WPA3(SAE Transition Mode) " + summary;
-        } else if (mWifiEntry.isOweTransitionMode()) {
-           summary = "WPA3(OWE Transition Mode) " + summary;
-        } else if (mWifiEntry.getSecurity() == WifiEntry.SECURITY_SAE) {
-           summary = "WPA3(SAE) " + summary;
-        } else if (mWifiEntry.getSecurity() == WifiEntry.SECURITY_OWE) {
-           summary = "WPA3(OWE) " + summary;
-        }
-
-        setSummary(summary);
-
+        setSummary(mWifiEntry.getSummary(false /* concise */));
         mContentDescription = buildContentDescription();
     }
 
@@ -208,13 +184,13 @@ public class WifiEntryPreference extends Preference implements WifiEntry.WifiEnt
     }
 
 
-    private void updateIcon(int level, int standard, boolean isReady) {
+    private void updateIcon(int level) {
         if (level == -1) {
             setIcon(null);
             return;
         }
 
-        final Drawable drawable = mIconInjector.getIcon(level, standard, isReady);
+        final Drawable drawable = mIconInjector.getIcon(level);
         if (drawable != null) {
             drawable.setTintList(Utils.getColorAttr(getContext(),
                     android.R.attr.colorControlNormal));
@@ -286,10 +262,6 @@ public class WifiEntryPreference extends Preference implements WifiEntry.WifiEnt
 
         public Drawable getIcon(int level) {
             return mContext.getDrawable(Utils.getWifiIconResource(level));
-        }
-
-        public Drawable getIcon(int level, int standard, boolean isReady) {
-            return mContext.getDrawable(Utils.getWifiIconResource(level, standard, isReady));
         }
     }
 
