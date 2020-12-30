@@ -328,7 +328,7 @@ final class UiModeManagerService extends SystemService {
         public void onChange(boolean selfChange, Uri uri) {
             if (uri.equals(System.getUriFor(System.ACCENT_COLOR))) {
                 final int intColor = System.getIntForUser(getContext().getContentResolver(),
-                        System.ACCENT_COLOR, 0xFF725AFF, UserHandle.USER_CURRENT);
+                        System.ACCENT_COLOR, 0xFF3DDB86, UserHandle.USER_CURRENT);
                 String colorHex = String.format("%08x", (0xFFFFFFFF & intColor));
                 SystemProperties.set(ACCENT_COLOR_PROP, colorHex);
         }
